@@ -1,18 +1,30 @@
 import React from "react";
 import Results from "./Results";
+import { resolve } from "styled-jsx/css";
 const API_KEY = process.env.API_KEY;
 const proxy = "http://cors-anywhere.herokuapp.com/";
 
 async function fetchMovieData(title) {
-  const res = await fetch(
-    `http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${API_KEY}`
-  );
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  console.log(data);
-  return data;
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `http://www.omdbapi.com/?t=${encodeURIComponent(
+            title
+          )}&apikey=${API_KEY}`,
+          { next: { revalidate: 10 } }
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        console.log(data);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    }, 200); // Delay of 2 seconds
+  });
 }
 
 export default async function Home({ searchParams }) {
@@ -48,7 +60,7 @@ export default async function Home({ searchParams }) {
     data = await fetchMovieData("Walter Pfeiffer: Chasing Beauty");
   } else {
     data = await fetchMovieData(genre);
-    console.log(fetchTrending);
+    // console.log(fetchTrending);
   }
 
   return <Results data={data} />;
