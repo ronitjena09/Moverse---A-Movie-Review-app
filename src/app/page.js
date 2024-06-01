@@ -1,8 +1,6 @@
 import React from "react";
 import Results from "./Results";
-import { resolve } from "styled-jsx/css";
 const API_KEY = process.env.API_KEY;
-const proxy = "http://cors-anywhere.herokuapp.com/";
 
 async function fetchMovieData(title) {
   return new Promise((resolve, reject) => {
@@ -18,7 +16,7 @@ async function fetchMovieData(title) {
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
-        console.log(data);
+        // console.log(data);
         resolve(data);
       } catch (error) {
         reject(error);
@@ -30,37 +28,49 @@ async function fetchMovieData(title) {
 export default async function Home({ searchParams }) {
   const genre = searchParams.genre || "fetchTrending";
 
-  let data;
+  let data = [];
+  const fetchTopRatedMovies = [
+    "Logan",
+    "Thor: Ragnarok",
+    "Dunkirk",
+    "Blade Runner 2049",
+    "Baby Driver",
+    "coco",
+    "Wind River",
+    "American Made",
+    "Logan Lucky",
+    "The Big Sick",
+    "the boss baby",
+    "The Meyerowitz Stories",
+  ];
+
+  const fetchTrendingMovies = [
+    "Two Mothers",
+    "Brave Enough",
+    "Boys on Film 16: Possession",
+    "Halt! Los!",
+    "Wear",
+    "Magnetic Highway: The Rise, Fall, and Resurgence of the Independent Video Store",
+    "Walter Pfeiffer: Chasing Beauty",
+    "The Survivor Grounds",
+    "Foot Stretcher",
+    "Escape from Candyland",
+    "Jake & Eddie",
+  ];
+
   if (genre === "fetchTopRated") {
-    data = await fetchMovieData("Wind River");
-    data = await fetchMovieData("Logan");
-    data = await fetchMovieData("The Meyerowitz Stories");
-    data = await fetchMovieData("Thor: Ragnarok");
-    data = await fetchMovieData("coco");
-    data = await fetchMovieData("Baby Driver");
-    data = await fetchMovieData("Dunkirk");
-    data = await fetchMovieData("The Big Sick");
-    data = await fetchMovieData("American Made");
-    data = await fetchMovieData("Logan Lucky");
-    data = await fetchMovieData("Blade Runner 2049");
-    data = await fetchMovieData("the boss baby");
+    for (let movie of fetchTopRatedMovies) {
+      const movieData = await fetchMovieData(movie);
+      data.push(movieData);
+    }
   } else if (genre === "fetchTrending") {
-    data = await fetchMovieData("Brave Enough");
-    data = await fetchMovieData("Two Mothers");
-    data = await fetchMovieData("Boys on Film 16: Possession");
-    data = await fetchMovieData("Halt! Los!");
-    data = await fetchMovieData("The Survivor Grounds");
-    data = await fetchMovieData("Jake & Eddie");
-    data = await fetchMovieData("Foot Stretcher");
-    data = await fetchMovieData("Escape from Candyland");
-    data = await fetchMovieData(
-      "Magnetic Highway: The Rise, Fall, and Resurgence of the Independent Video Store"
-    );
-    data = await fetchMovieData("Wear");
-    data = await fetchMovieData("Walter Pfeiffer: Chasing Beauty");
+    for (let movie of fetchTrendingMovies) {
+      const movieData = await fetchMovieData(movie);
+      data.push(movieData);
+    }
   } else {
-    data = await fetchMovieData(genre);
-    // console.log(fetchTrending);
+    const movieData = await fetchMovieData(genre);
+    data.push(movieData);
   }
 
   return <Results data={data} />;
