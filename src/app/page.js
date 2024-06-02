@@ -13,6 +13,7 @@ async function fetchMovieData(title) {
           { next: { revalidate: 10 } }
         );
         const data = await res.json();
+        console.log(data,"data");
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }

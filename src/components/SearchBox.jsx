@@ -14,7 +14,7 @@ export default function SearchBox() {
   };
 
   return (
-    <form className="flex justify-between px-5 max-w-6xl mx-auto" onSubmit={handleSubmit}>
+    <form className="flex justify-between gap-2 px-5 max-w-6xl mx-auto" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Search Keyword here"
@@ -22,7 +22,7 @@ export default function SearchBox() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <button className="text-green-400 disabled:text-gray-400" disabled={!search.trim()}>
+      <button className="text-green-400 disabled:text-gray-400 " disabled={!search.trim()}>
         Search
       </button>
     </form>
