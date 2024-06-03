@@ -32,11 +32,13 @@ export default async function Home({ searchParams }) {
   let data = [];
   const fetchTopRatedMovies = [
     "Logan",
+    "Spider-Man: Into the Spider-Verse",
     "Thor: Ragnarok",
+    "Beautiful Disaster",
+    "Fast X",
     "Dunkirk",
     "Blade Runner 2049",
     "Baby Driver",
-    "coco",
     "Wind River",
     "American Made",
     "Logan Lucky",
@@ -44,19 +46,23 @@ export default async function Home({ searchParams }) {
     "the boss baby",
     "The Meyerowitz Stories",
   ];
-
+  
   const fetchTrendingMovies = [
+    "One Piece Film: Red",
     "Two Mothers",
+    "Wish",
+    "Transformers: Rise of the Beasts",
     "Brave Enough",
-    "Boys on Film 16: Possession",
+    "Aquaman and the Lost Kingdom",
+    "Joker",
+    "Jujutsu Kaisen 0",
     "Halt! Los!",
-    "Wear",
+    "Hachi: A Dog's Tale",
     "Magnetic Highway: The Rise, Fall, and Resurgence of the Independent Video Store",
     "Walter Pfeiffer: Chasing Beauty",
     "The Survivor Grounds",
     "Foot Stretcher",
     "Escape from Candyland",
-    "Jake & Eddie",
   ];
 
   if (genre === "fetchTopRated") {

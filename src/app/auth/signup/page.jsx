@@ -1,14 +1,15 @@
+// pages/auth/signup.jsx
 "use client";
 import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import axios from "axios"; // Import Axios
+import axios from "axios"; 
 
 const Signup = () => {
     const router = useRouter();
-    const firstNameRef = useRef(null);
-    const lastNameRef = useRef(null);
+    const nameRef = useRef(null);
+    const usernameRef = useRef(null);
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
@@ -16,8 +17,8 @@ const Signup = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const firstName = firstNameRef.current.value;
-        const lastName = lastNameRef.current.value;
+        const name = nameRef.current.value;
+        const username = usernameRef.current.value;
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         const confirmPassword = confirmPasswordRef.current.value;
@@ -32,13 +33,13 @@ const Signup = () => {
             return;
         }
 
-        const signupData = { firstName, lastName, email, password };
-
+        const signupData = { name, username, email, password };
+        console.log(signupData);
         try {
-            const response = await axios.post('/api/signup', signupData); // Use Axios instead of fetch
+            const response = await axios.post('/api/signup', signupData);
             console.log("Signup Data:", signupData);
 
-            if (response.status === 201) {
+            if (response.status === 200) {
                 console.log("Signup successful:", response.data);
                 router.push("/login");
             } else {
@@ -50,7 +51,6 @@ const Signup = () => {
             alert(error.message || 'An error occurred during signup');
         }
     };
-
     const handleView = () => {
         setViewPassword(!viewPassword);
     };
@@ -65,12 +65,12 @@ const Signup = () => {
                     <div className="text-center text-2xl font-bold mb-4">Create Your Account</div>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="flex flex-col space-y-2">
-                            <label htmlFor="firstName" className="text-lg">First Name:</label>
-                            <input type="text" id="firstName" ref={firstNameRef} className='border rounded-lg px-4 py-2 outline-none' required />
+                            <label htmlFor="name" className="text-lg">Name:</label>
+                            <input type="text" id="name" ref={nameRef} className='border rounded-lg px-4 py-2 outline-none' required />
                         </div>
                         <div className="flex flex-col space-y-2">
-                            <label htmlFor="lastName" className="text-lg">Last Name:</label>
-                            <input type="text" id="lastName" ref={lastNameRef} className='border rounded-lg px-4 py-2 outline-none' required />
+                            <label htmlFor="username" className="text-lg">Username:</label>
+                            <input type="text" id="username" ref={usernameRef} className='border rounded-lg px-4 py-2 outline-none' required />
                         </div>
                         <div className="flex flex-col space-y-2">
                             <label htmlFor="email" className="text-lg">Email:</label>

@@ -1,28 +1,40 @@
-"use client"
-import React, { useState, useRef } from "react";
+// auth/login/SignIn.jsx
+"use client";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import Checkbox from '@mui/material/Checkbox';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import axios from "axios"; 
 
-const Login = () => {
+const Signin = () => {
     const router = useRouter();
-    const usernameRef = useRef(null);
+    const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const [viewPassword, setViewPassword] = useState(false);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const username = usernameRef.current.value;
+        const email = emailRef.current.value;
         const password = passwordRef.current.value;
-        console.log("Username:", username);
-        console.log("Password:", password);
-        // Placeholder: Implement your login logic here
-        if (username === "user" && password === "password") {
-            localStorage.setItem("user", "loggedIn");
-            router.push("/");
-        } else {
-            alert("Invalid credentials");
+
+        const signinData = { email, password };
+
+        try {
+            const response = await axios.post('/api/signin', signinData);
+
+            if (response.status === 200) {
+                console.log("Sign-in successful:", response.data);
+                // Store user info in localStorage
+                localStorage.setItem("user", JSON.stringify(response.data.user));
+                // Redirect to home or another page
+                router.push("/src/pages/index.js");
+            } else {
+                console.error("Sign-in error:", response.data);
+                alert(response.data.error || 'An error occurred during sign-in');
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+            alert(error.message || 'An error occurred during sign-in');
         }
     };
 
@@ -33,15 +45,15 @@ const Login = () => {
     return (
         <>
             <div className="video_info_header">
-                <div className="home_heading2">Login</div>
+                <div className="home_heading2">Sign In</div>
             </div>
             <div className="flex justify-center items-center h-screen">
                 <div className='bg-white shadow-lg rounded-lg p-8 w-96'>
-                    <div className="text-center text-2xl font-bold mb-4">WELCOME BACK!</div>
+                    <div className="text-center text-2xl font-bold mb-4">Sign In to Your Account</div>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="flex flex-col space-y-2">
-                            <label htmlFor="username" className="text-lg">Username:</label>
-                            <input type="text" id="username" ref={usernameRef} className='border rounded-lg px-4 py-2 outline-none' required />
+                            <label htmlFor="email" className="text-lg">Email:</label>
+                            <input type="email" id="email" ref={emailRef} className='border rounded-lg px-4 py-2 outline-none' required />
                         </div>
                         <div className="flex flex-col space-y-2">
                             <label htmlFor="password" className="text-lg">Password:</label>
@@ -52,18 +64,11 @@ const Login = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                            <label htmlFor="remember" className="text-base flex items-center">
-                                <Checkbox defaultChecked inputProps={{ 'aria-label': 'Remember Me' }} />
-                                <span className="ml-2">Remember Me</span>
-                            </label>
-                            <a href="#" className="text-sm">Forgot Password?</a>
-                        </div>
-                        <button type="submit" className='bg-blue-500 w-full text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300'>
-                            Sign in
+                        <button type="submit" className='bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300'>
+                            Sign In
                         </button>
                         <div className="text-sm text-center">
-                            New to MovieVerse? <a href="/auth/signup" className="text-blue-500 hover:underline">Sign up</a>
+                            Don&apos;t have an account? <a href="/auth/signup" className="text-blue-500 hover:underline">Sign up</a>
                         </div>
                     </form>
                 </div>
@@ -72,4 +77,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Signin;
