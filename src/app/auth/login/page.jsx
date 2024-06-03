@@ -27,7 +27,7 @@ const Signin = () => {
                 // Store user info in localStorage
                 localStorage.setItem("user", JSON.stringify(response.data.user));
                 // Redirect to home or another page
-                router.push("/src/pages/index.js");
+                router.push("/");
             } else {
                 console.error("Sign-in error:", response.data);
                 alert(response.data.error || 'An error occurred during sign-in');
